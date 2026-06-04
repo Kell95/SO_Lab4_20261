@@ -23,10 +23,12 @@ int main(int argc, char *argv[]) {
 
   double time_spent = ((double)(end - start)) / CLOCKS_PER_SEC;
 
-  for (int i = 0; i < n; i++) {
-    printf("%lld ", arr[i]);
+  if (n <= 100) { // ommit large outputs
+    for (int i = 0; i < n; i++) {
+      printf("%lld ", arr[i]);
+    }
+    printf("\n");
   }
-  printf("\n");
   printf("time spent: %f seconds\n", time_spent);
 
   free(arr);
