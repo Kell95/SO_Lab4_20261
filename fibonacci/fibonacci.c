@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int main(int argc, char *argv[]) {
+  clock_t start = clock();
+
   if (argc != 2) {
     fprintf(stderr, "Error: invalid params, usage fibonacci <n>\n");
     return 1;
@@ -16,10 +19,15 @@ int main(int argc, char *argv[]) {
     arr[i] = arr[i - 2] + arr[i - 1];
   }
 
+  clock_t end = clock();
+
+  double time_spent = ((double)(end - start)) / CLOCKS_PER_SEC;
+
   for (int i = 0; i < n; i++) {
     printf("%lld ", arr[i]);
   }
   printf("\n");
+  printf("time spent: %f seconds\n", time_spent);
 
   free(arr);
 

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <time.h>
 
 typedef struct {
   int n;
@@ -23,6 +24,8 @@ void *calculate_fibonacci(void *args) {
 }
 
 int main(int argc, char *argv[]) {
+  clock_t start = clock();
+
   assert(argc == 2 && "usage: fibonacci <n>");
   pthread_t tread_id;
 
@@ -34,9 +37,12 @@ int main(int argc, char *argv[]) {
   pthread_create(&tread_id, NULL, calculate_fibonacci, &fargs);
   pthread_join(tread_id, NULL);
 
+  clock_t end = clock();
+  double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
   for (int i = 0; i < n; i ++ ) {
     printf("%lld ", arr[i]);
   }
   printf("\n");
+  printf("time spent: %f seconds\n", time_spent);
   free(arr);
 }
