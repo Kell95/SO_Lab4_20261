@@ -91,3 +91,23 @@ int main(int argc, char *argv[]) {
   free(arr);
 }
 ```
+
+### Problemas encontrados durante esta implementacion
+
+Tipo de dato `int`. Inicialmente en la implementacion utilizamos el tipo de dato int para seaprar la memoria para la lista de numeros de la sucesion de fibonacci. Pero como la sucesion de fibonacci crece tan rapido para numeros grandes de `n` empezaban a salir numeros negativos. Investigamos y nos dimos cuenta que se debia al tipo de dato `int` que es demaciado pequeño para este tipo de algoritmos. Asi que la solucion fue utilizar el tipo de dato `long long`
+
+### Pruebas de funcionalidad del programa
+
+Las siguiente imagen muestra una prueba del funcionamiento del programa con diferentes entradas.
+
+![demostracion de funcionalidad fibonacci](images/demostracion-fibonacci.png)
+
+> **Nota**: en la imagen se puede visualizar que para la entrada `n = 190` se muestra el tiempo de ejecución del programa pero no el array de números de la sucesión, y esto es intencional, se puso para que fuera mas facil compara el tiempo de ejecucion para entradas grandes y evitar outputs depaciado grande que dificulte dicha comparación
+
+## Manifiesto de transparncia
+
+La IA nos fue util para la implementacion y la busqueda y solucion de problemas, los siguientes son los casos en la que fue utilizada.
+
+- Completaciones de codigo en editor de texto. Los editores de codigo modernos tiene sugerencias de codigo en linea generados por inteligencia artificial. Algunos de los cuales fueron sugerencias muy utiles en esta implementacino.
+
+- Investigacion y solucion de problemas. El motor de busqueda de google trae una inteligencia artificial integrada, que ayuda a que las busquedas sean mucho mas rapidas, pues recolecta informacion de diferentes fuentes y genera sugerencias de codigo. Esta fue utilizada para resolver dudas relacionadas, con como implementar hilos en c, como medir el tiempo de ejecucion de un programa en c y otras relacionadas con el laboratorio
