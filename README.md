@@ -102,7 +102,7 @@ Las siguiente imagen muestra una prueba del funcionamiento del programa con dife
 
 ![demostracion de funcionalidad fibonacci](images/demostracion-fibonacci.png)
 
-> **Nota**: en la imagen se puede visualizar que para la entrada `n = 190` se muestra el tiempo de ejecución del programa pero no el array de números de la sucesión, y esto es intencional, se puso para que fuera mas facil compara el tiempo de ejecucion para entradas grandes y evitar outputs depaciado grande que dificulte dicha comparación
+> **Nota**: en la imagen se puede visualizar que para la entrada `n = 190` se muestra el tiempo de ejecución del programa pero no el array de números de la sucesión, y esto es intencional, se puso para que fuera mas facil comparar el tiempo de ejecucion para entradas grandes y evitar outputs demaciado grandes que dificulte dicha comparación
 
 ## Manifiesto de transparncia
 
