@@ -1,4 +1,4 @@
-# Laboratorio #4 Sistemas operativos 
+# Laboratorio #4 Sistemas operativos
 
 ## Integrantes 
 
@@ -11,12 +11,12 @@
 > b.jaraba@udea.edu.co
 > 1032178608
 ---
-## Integracion numerica $\pi$
+## Integración numérica $\pi$
 
 ---
 
-## Sucecion de fibonacci
-Para este laboratorio se implemento una version de la sucecion de fibonacci utilizando hilos. Esta implementacion tiene una ligera diferencia con la mas comun. En esta version de la sucesion de fibonacci, se tomaron los siguentes casos bases
+## Sucesión de Fibonacci
+Para este laboratorio se implementó una versión de la sucesión de Fibonacci utilizando hilos. Esta implementación tiene una ligera diferencia con la más común. En esta versión de la sucesión de Fibonacci, se tomaron los siguientes casos base
 
 $$
 f(-2) = 0 \text{, y }
@@ -29,15 +29,15 @@ $$
 f(n) = f(n-1) +f(n-2) \text{ para } n \ge 0
 $$
 
-Por lo tanto 
+Por lo tanto
 
 $$
 f(0) = 1 \text{, y } f(1) = 2
 $$
 
-### Explicacion de la implementacion del codigo
+### Explicación de la implementación del código
 
-- **Funcion que ejecuta el hilo hijo**. Esta funcion recibira como parametro una estructura que contendra el valor `n` pasado por consola por el usuario mas un array de tamaño n en donde si iran almacenando las sumas de la sucesión. Luego se definiran los casos bases, es decir para cuando `n = 0` y `n = 1`, el para los cuales los valores son 1 y 2 respectivamente. y por ultimo, se iterara a traves del array para donde el valor del indice `i` del array sera la suma del anterior y el segundo anterior. Como se ve en el siguiente fragmento de codigo
+- **Función que ejecuta el hilo hijo**. Esta función recibirá como parámetro una estructura que contendrá el valor `n` pasado por consola por el usuario más un array de tamaño `n` en donde se irán almacenando las sumas de la sucesión. Luego se definirán los casos base, es decir para cuando `n = 0` y `n = 1`, para los cuales los valores son 1 y 2 respectivamente. Y por último, se iterará a través del array donde el valor del índice `i` del array será la suma del anterior y del segundo anterior. Como se ve en el siguiente fragmento de código
 
 ```c
 typedef struct {
@@ -60,7 +60,7 @@ void *calculate_fibonacci(void *args) {
 }
 ```
 
-- **Funcion `main`, hilo padre**. En esta parte del codigo recibimos los argumentos pasados por consola (el valor de `n`), se comprueba que sean correctos, se crea el espacio de memoria para el array de tamaño `n` y se crea una instancia de la estructura usando n y el puntero del array. Luego se crea la rama usando `pthread_create`, luego esperamos que el hilo termine usando la funcion `pthread_join` se calcula el tiempo gastado, en caso de que el `n` se menor o igual a 100 imprimimos cuada uno de los elementos del array, y finalmente liberamos el puntero al array. Como se puede ver en el siguiente fragmento de codigo.
+ - **Función `main`, hilo padre**. En esta parte del código recibimos los argumentos pasados por consola (el valor de `n`), se comprueba que sean correctos, se crea el espacio de memoria para el array de tamaño `n` y se crea una instancia de la estructura usando `n` y el puntero del array. Luego se crea la rama usando `pthread_create`, esperamos que el hilo termine usando la función `pthread_join`, se calcula el tiempo gastado; en caso de que `n` sea menor o igual a 100 imprimimos cada uno de los elementos del array, y finalmente liberamos el puntero al array. Como se puede ver en el siguiente fragmento de código.
 
 ```c
 
@@ -92,22 +92,22 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-### Problemas encontrados durante esta implementacion
+### Problemas encontrados durante esta implementación
 
-Tipo de dato `int`. Inicialmente en la implementacion utilizamos el tipo de dato int para seaprar la memoria para la lista de numeros de la sucesion de fibonacci. Pero como la sucesion de fibonacci crece tan rapido para numeros grandes de `n` empezaban a salir numeros negativos. Investigamos y nos dimos cuenta que se debia al tipo de dato `int` que es demaciado pequeño para este tipo de algoritmos. Asi que la solucion fue utilizar el tipo de dato `long long`
+Tipo de dato `int`. Inicialmente en la implementación utilizamos el tipo de dato `int` para separar la memoria para la lista de números de la sucesión de Fibonacci. Pero como la sucesión de Fibonacci crece tan rápido, para números grandes de `n` empezaban a salir números negativos. Investigamos y nos dimos cuenta que se debía al tipo de dato `int`, que es demasiado pequeño para este tipo de algoritmos. Así que la solución fue utilizar el tipo de dato `long long`.
 
 ### Pruebas de funcionalidad del programa
 
-Las siguiente imagen muestra una prueba del funcionamiento del programa con diferentes entradas.
+La siguiente imagen muestra una prueba del funcionamiento del programa con diferentes entradas.
 
-![demostracion de funcionalidad fibonacci](images/demostracion-fibonacci.png)
+![demostración de funcionalidad Fibonacci](images/demostracion-fibonacci.png)
 
-> **Nota**: en la imagen se puede visualizar que para la entrada `n = 190` se muestra el tiempo de ejecución del programa pero no el array de números de la sucesión, y esto es intencional, se puso para que fuera mas facil comparar el tiempo de ejecucion para entradas grandes y evitar outputs demaciado grandes que dificulte dicha comparación
+> **Nota**: en la imagen se puede visualizar que para la entrada `n = 190` se muestra el tiempo de ejecución del programa pero no el array de números de la sucesión, y esto es intencional; se puso para que fuera más fácil comparar el tiempo de ejecución para entradas grandes y evitar outputs demasiado grandes que dificulten dicha comparación.
 
-## Manifiesto de transparncia
+## Manifiesto de transparencia
 
-La IA nos fue util para la implementacion y la busqueda y solucion de problemas, los siguientes son los casos en la que fue utilizada.
+La IA nos fue útil para la implementación y la búsqueda y solución de problemas; los siguientes son los casos en los que fue utilizada.
 
-- Completaciones de codigo en editor de texto. Los editores de codigo modernos tiene sugerencias de codigo en linea generados por inteligencia artificial. Algunos de los cuales fueron sugerencias muy utiles en esta implementacino.
+- Completaciones de código en editores de texto. Los editores de código modernos tienen sugerencias de código en línea generadas por inteligencia artificial, algunas de las cuales fueron sugerencias muy útiles en esta implementación.
 
-- Investigacion y solucion de problemas. El motor de busqueda de google trae una inteligencia artificial integrada, que ayuda a que las busquedas sean mucho mas rapidas, pues recolecta informacion de diferentes fuentes y genera sugerencias de codigo. Esta fue utilizada para resolver dudas relacionadas, con como implementar hilos en c, como medir el tiempo de ejecucion de un programa en c y otras relacionadas con el laboratorio
+- Investigación y solución de problemas. El motor de búsqueda de Google trae una inteligencia artificial integrada, que ayuda a que las búsquedas sean mucho más rápidas, pues recolecta información de diferentes fuentes y genera sugerencias de código. Esta fue utilizada para resolver dudas relacionadas con cómo implementar hilos en C, cómo medir el tiempo de ejecución de un programa en C y otras relacionadas con el laboratorio
