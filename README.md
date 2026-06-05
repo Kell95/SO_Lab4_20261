@@ -37,9 +37,9 @@ $$
 
 ### Explicacion de la implementacion del codigo
 
-- **Funcion que ejecuta el hilo hijo**. Esta funcion recibira como parametro una estructura que contendra el valor `n` pasado por consola por el usuario mas un array de tamaño n en donde si iran almacenando las sumas de la sucesión. Luego se definiran los casos bases, es decir para cuando `n = 0` y `n = 1`, el para los cuales los valores son 1 y 2 respectivamente. y por ultimo, se iterara a traves del array para donde el valor del indice `i` del array sera la suma del anterior y el segundo anterior. Como se ve en el siguiente fragmento de codigo 
+- **Funcion que ejecuta el hilo hijo**. Esta funcion recibira como parametro una estructura que contendra el valor `n` pasado por consola por el usuario mas un array de tamaño n en donde si iran almacenando las sumas de la sucesión. Luego se definiran los casos bases, es decir para cuando `n = 0` y `n = 1`, el para los cuales los valores son 1 y 2 respectivamente. y por ultimo, se iterara a traves del array para donde el valor del indice `i` del array sera la suma del anterior y el segundo anterior. Como se ve en el siguiente fragmento de codigo
 
-```{c}
+```c
 typedef struct {
   int n;
   long long  *arr;
@@ -62,7 +62,7 @@ void *calculate_fibonacci(void *args) {
 
 - **Funcion `main`, hilo padre**. En esta parte del codigo recibimos los argumentos pasados por consola (el valor de `n`), se comprueba que sean correctos, se crea el espacio de memoria para el array de tamaño `n` y se crea una instancia de la estructura usando n y el puntero del array. Luego se crea la rama usando `pthread_create`, luego esperamos que el hilo termine usando la funcion `pthread_join` se calcula el tiempo gastado, en caso de que el `n` se menor o igual a 100 imprimimos cuada uno de los elementos del array, y finalmente liberamos el puntero al array. Como se puede ver en el siguiente fragmento de codigo.
 
-```{c}
+```c
 
 int main(int argc, char *argv[]) {
   clock_t start = clock();
