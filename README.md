@@ -34,6 +34,7 @@ La versión serial realiza el cálculo recorriendo todas las particiones del int
 $$
 x = h * (i + 0.5)
 $$
+
 donde h representa el tamaño de cada subintervalo. Posteriormente se evalúa la función:
 
 $$
