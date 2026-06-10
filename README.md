@@ -14,9 +14,9 @@
 ## Integración numérica $\pi$
 En esta parte del laboratorio se implementó un programa para calcular una aproximación del número π utilizando integración numérica. El método empleado se basa en la siguiente integral:
 
-[
-\pi = \int_{0}^{1} \frac{4}{1+x^2}dx
-]
+$$
+pi = \int_{0}^{1} \frac{4}{1+x^2}dx
+$$
 
 La idea consiste en dividir el intervalo ([0,1]) en una gran cantidad de subintervalos y aproximar el área bajo la curva mediante la regla del punto medio. A medida que aumenta el número de divisiones, la aproximación obtenida se acerca más al valor real de π.
 
@@ -31,11 +31,14 @@ La versión serial realiza el cálculo recorriendo todas las particiones del int
 
 # Para cada iteración se calcula:
 
-x = h * (i + 0.5);
-
+$$
+x = h * (i + 0.5)
+$$
 donde h representa el tamaño de cada subintervalo. Posteriormente se evalúa la función:
 
+$$
 f(x) = 4 / (1 + x²)
+$$
 
 y el resultado se acumula en una suma total. Finalmente, la suma se multiplica por el tamaño del intervalo para obtener la aproximación de π.
 
