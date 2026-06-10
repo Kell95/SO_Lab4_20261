@@ -12,6 +12,71 @@
 > 1032178608
 ---
 ## Integración numérica $\pi$
+En esta parte del laboratorio se implementó un programa para calcular una aproximación del número π utilizando integración numérica. El método empleado se basa en la siguiente integral:
+
+[
+\pi = \int_{0}^{1} \frac{4}{1+x^2}dx
+]
+
+La idea consiste en dividir el intervalo ([0,1]) en una gran cantidad de subintervalos y aproximar el área bajo la curva mediante la regla del punto medio. A medida que aumenta el número de divisiones, la aproximación obtenida se acerca más al valor real de π.
+
+# Para el desarrollo de la práctica se implementaron dos versiones del programa:
+
+Una versión serial (pi.c), que realiza todos los cálculos utilizando un único hilo de ejecución.
+Una versión paralela (pi_p.c), que distribuye el trabajo entre varios hilos utilizando la biblioteca POSIX Threads (Pthreads).
+Explicación de la implementación
+Versión serial
+
+La versión serial realiza el cálculo recorriendo todas las particiones del intervalo y acumulando el valor de la función evaluada en cada punto medio.
+
+# Para cada iteración se calcula:
+
+x = h * (i + 0.5);
+
+donde h representa el tamaño de cada subintervalo. Posteriormente se evalúa la función:
+
+f(x) = 4 / (1 + x²)
+
+y el resultado se acumula en una suma total. Finalmente, la suma se multiplica por el tamaño del intervalo para obtener la aproximación de π.
+
+# Versión paralela
+
+La versión paralela utiliza una estrategia de paralelismo de datos. El número total de iteraciones se divide entre la cantidad de hilos especificada por el usuario.
+
+Cada hilo recibe un rango de iteraciones sobre el cual debe trabajar y calcula una suma parcial de manera independiente. Esto permite que varios segmentos del problema sean procesados simultáneamente.
+
+Una vez todos los hilos terminan su ejecución, el hilo principal utiliza pthread_join() para esperar su finalización y recopilar las sumas parciales generadas. Posteriormente, estas sumas son agregadas para obtener el resultado final.
+
+Esta estrategia evita el uso de variables compartidas durante el cálculo, reduciendo problemas de sincronización y posibles condiciones de carrera.
+
+# Medición del rendimiento
+
+Para comparar el comportamiento de ambas versiones se incorporó una función de medición de tiempo utilizando gettimeofday().
+
+Las pruebas se realizaron utilizando un valor de:
+
+n = 2000000000
+
+Posteriormente se ejecutó la versión paralela con diferentes cantidades de hilos (1, 2, 4, 8 y 16) para analizar el impacto del paralelismo sobre el tiempo de ejecución.
+
+A partir de los resultados obtenidos se calcularon las métricas de Speedup y Eficiencia, las cuales permiten evaluar qué tan efectiva fue la paralelización implementada.
+
+# Problemas encontrados durante la implementación
+
+Uno de los principales retos fue definir una forma adecuada de dividir las iteraciones entre los diferentes hilos. Para solucionarlo, se calculó el tamaño de bloque correspondiente a cada hilo y se asignó cualquier iteración restante al último hilo.
+
+Otro aspecto importante fue evitar problemas de concurrencia al momento de acumular los resultados. Inicialmente se consideró utilizar una variable compartida, pero esto habría requerido mecanismos de sincronización adicionales. La solución implementada consistió en que cada hilo almacenara su resultado en una variable propia y que la suma final se realizara únicamente en el hilo principal.
+
+Durante las pruebas también se observó que la versión paralela no obtuvo mejores tiempos que la versión serial. Esto probablemente se debe al costo adicional asociado a la creación y sincronización de hilos, así como a las limitaciones del entorno de ejecución utilizado para realizar las pruebas.
+
+# Pruebas realizadas
+
+- Se verificó inicialmente que ambas versiones produjeran valores de π con una precisión similar.
+
+- Posteriormente se ejecutó la versión serial para obtener el tiempo de referencia (Ts) y se realizaron varias ejecuciones de la versión paralela variando el número de hilos disponibles.
+
+- Con los resultados obtenidos se construyó una tabla comparativa y una gráfica de Speedup que permitieron analizar el comportamiento del algoritmo frente al incremento del paralelismo.
+
 
 ---
 
