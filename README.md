@@ -18,7 +18,12 @@ $$
 pi = \int_{0}^{1} \frac{4}{1+x^2}dx
 $$
 
-La idea consiste en dividir el intervalo ([0,1]) en una gran cantidad de subintervalos y aproximar el área bajo la curva mediante la regla del punto medio. A medida que aumenta el número de divisiones, la aproximación obtenida se acerca más al valor real de π.
+La idea consiste en dividir el intervalo ([0,1]) en una gran cantidad de subintervalos y aproximar el área bajo la curva mediante la regla del punto medio. A medida que aumenta el número de divisiones, la aproximación obtenida se acerca cada vez más al valor real de π.
+
+Para el desarrollo de la práctica se implementaron dos versiones del programa:
+
+Versión serial (pi.c): realiza todos los cálculos utilizando un único hilo de ejecución.
+Versión paralela (pi_p.c): distribuye el trabajo entre varios hilos.
 
 ## Para el desarrollo de la práctica se implementaron dos versiones del programa:
 
@@ -29,58 +34,97 @@ Versión serial
 
 La versión serial realiza el cálculo recorriendo todas las particiones del intervalo y acumulando el valor de la función evaluada en cada punto medio.
 
-## Para cada iteración se calcula:
+
+## Implementación y documentación de funciones
+ersión serial (pi.c)
+Función GetTime()
+
+Esta función obtiene el tiempo actual del sistema utilizando la estructura timeval y la llamada al sistema gettimeofday(). Su propósito es medir el tiempo de ejecución del algoritmo y evaluar el rendimiento de la aplicación.
+
+Función f(double x)
+
+Implementa la función matemática utilizada para calcular la integral:
 
 $$
-x = h * (i + 0.5)
+f(x)=\frac{4}{1+x^2}
 $$
 
-donde h representa el tamaño de cada subintervalo. Posteriormente se evalúa la función:
+Recibe como parámetro el valor de x y retorna el resultado de la evaluación de la función.
+
+Función CalcPi(long long n)
+
+Es la función encargada de realizar el cálculo de π mediante integración numérica. Calcula el tamaño de cada subintervalo y recorre las n particiones del intervalo. Para cada iteración determina el punto medio:
 
 $$
-f(x) = 4 / (1 + x²)
+x=h(i+0.5)
 $$
 
-y el resultado se acumula en una suma total. Finalmente, la suma se multiplica por el tamaño del intervalo para obtener la aproximación de π.
+evalúa la función en dicho punto y acumula el resultado en una suma total. Finalmente multiplica la suma acumulada por el tamaño del subintervalo para obtener la aproximación de π.
 
-## Versión paralela
+Función main()
 
-La versión paralela utiliza una estrategia de paralelismo de datos. El número total de iteraciones se divide entre la cantidad de hilos especificada por el usuario.
+Controla la ejecución general del programa. Recibe el número de iteraciones desde la línea de comandos, inicia la medición del tiempo, invoca la función CalcPi(), muestra el valor calculado de π y reporta el tiempo total de ejecución.
 
-Cada hilo recibe un rango de iteraciones sobre el cual debe trabajar y calcula una suma parcial de manera independiente. Esto permite que varios segmentos del problema sean procesados simultáneamente.
+## Versión paralela (pi_p.c)
 
-Una vez todos los hilos terminan su ejecución, el hilo principal utiliza pthread_join() para esperar su finalización y recopilar las sumas parciales generadas. Posteriormente, estas sumas son agregadas para obtener el resultado final.
+Estructura ThreadData
 
-Esta estrategia evita el uso de variables compartidas durante el cálculo, reduciendo problemas de sincronización y posibles condiciones de carrera.
+Se utiliza para transferir información entre el hilo principal y los hilos trabajadores. Contiene:
+
+start: inicio del rango de iteraciones.
+end: fin del rango de iteraciones.
+partial_sum: suma parcial calculada por el hilo.
+h: tamaño del subintervalo.
+Función CalcPartialPi(void *arg)
+
+Es la función ejecutada por cada hilo. Recibe una estructura ThreadData con el rango de iteraciones asignado y calcula una suma parcial de la integral únicamente para ese segmento. El resultado es almacenado en el campo partial_sum de la estructura correspondiente.
+
+Función main()
+
+La función principal recibe el número total de iteraciones y la cantidad de hilos a utilizar. Posteriormente divide el trabajo entre los hilos disponibles, crea los hilos mediante pthread_create(), espera su finalización con pthread_join() y suma todos los resultados parciales obtenidos. Finalmente calcula el valor aproximado de π y muestra el tiempo de ejecución.
+
+
+## Estrategia de paralelización
+
+La versión paralela implementa una estrategia de paralelismo de datos. El conjunto total de iteraciones se divide en bloques de tamaño similar y cada hilo procesa un bloque de manera independiente.
+
+Cada hilo calcula una suma parcial local, evitando el acceso concurrente a variables compartidas durante el cálculo. Una vez finalizada la ejecución de todos los hilos, el hilo principal recopila los resultados mediante pthread_join() y realiza la suma final.
+
+Esta estrategia elimina la necesidad de utilizar mutex o mecanismos adicionales de sincronización durante la fase de cálculo, reduciendo la contención entre hilos y simplificando la implementación.
 
 ## Medición del rendimiento
 
-Para comparar el comportamiento de ambas versiones se incorporó una función de medición de tiempo utilizando gettimeofday().
+Para comparar el desempeño de ambas versiones se incorporó instrumentación utilizando la función GetTime(), basada en gettimeofday().
 
-Las pruebas se realizaron utilizando un valor de:
+Las pruebas se realizaron utilizando:
 
 n = 2000000000
 
 Posteriormente se ejecutó la versión paralela con diferentes cantidades de hilos (1, 2, 4, 8 y 16) para analizar el impacto del paralelismo sobre el tiempo de ejecución.
 
-A partir de los resultados obtenidos se calcularon las métricas de Speedup y Eficiencia, las cuales permiten evaluar qué tan efectiva fue la paralelización implementada.
+A partir de los resultados obtenidos se calcularon las métricas de:
 
-## Problemas encontrados durante la implementación
+Speedup (Ts/Tp), que indica cuántas veces la versión paralela es más rápida que la serial.
 
-Uno de los principales retos fue definir una forma adecuada de dividir las iteraciones entre los diferentes hilos. Para solucionarlo, se calculó el tamaño de bloque correspondiente a cada hilo y se asignó cualquier iteración restante al último hilo.
+Eficiencia (Speedup/N), que mide el aprovechamiento de los hilos utilizados.
 
-Otro aspecto importante fue evitar problemas de concurrencia al momento de acumular los resultados. Inicialmente se consideró utilizar una variable compartida, pero esto habría requerido mecanismos de sincronización adicionales. La solución implementada consistió en que cada hilo almacenara su resultado en una variable propia y que la suma final se realizara únicamente en el hilo principal.
+## Problemas encontrados y soluciones implementadas
 
-Durante las pruebas también se observó que la versión paralela no obtuvo mejores tiempos que la versión serial. Esto probablemente se debe al costo adicional asociado a la creación y sincronización de hilos, así como a las limitaciones del entorno de ejecución utilizado para realizar las pruebas.
+- El primero consistió en definir una estrategia adecuada para distribuir las iteraciones entre los diferentes hilos. Para solucionarlo se calculó un tamaño de bloque para cada hilo utilizando la división del número total de iteraciones entre la cantidad de hilos. Las iteraciones restantes fueron asignadas al último hilo para garantizar que todo el trabajo fuera procesado.
+
+- Otro aspecto importante fue evitar condiciones de carrera al acumular los resultados parciales. Inicialmente se consideró utilizar una variable compartida para almacenar la suma total; sin embargo, esto habría requerido mecanismos adicionales de sincronización. La solución adoptada consistió en que cada hilo almacenara su resultado en una variable propia (partial_sum) y que la suma final fuera realizada exclusivamente por el hilo principal.
+
+- Durante las pruebas también se observó que la versión paralela no siempre obtuvo mejores tiempos que la versión serial. Este comportamiento puede explicarse por el overhead asociado a la creación, planificación y sincronización de los hilos, además de las características particulares del entorno de ejecución utilizado para las pruebas.
 
 ## Pruebas realizadas
 
-- Se verificó inicialmente que ambas versiones produjeran valores de π con una precisión similar.
+- Para verificar la funcionalidad de la implementación se realizaron diversas pruebas.
 
-- Posteriormente se ejecutó la versión serial para obtener el tiempo de referencia (Ts) y se realizaron varias ejecuciones de la versión paralela variando el número de hilos disponibles.
+- Inicialmente se comprobó que tanto la versión serial como la versión paralela produjeran valores de π prácticamente idénticos, validando la correcta división del trabajo entre los hilos.
 
-- Con los resultados obtenidos se construyó una tabla comparativa y una gráfica de Speedup que permitieron analizar el comportamiento del algoritmo frente al incremento del paralelismo.
+- Posteriormente se ejecutó la versión serial para obtener el tiempo de referencia (Ts). Después se realizaron múltiples ejecuciones de la versión paralela utilizando diferentes cantidades de hilos para obtener los tiempos paralelos (Tp).
 
+- Con los resultados obtenidos se construyó una tabla comparativa y una gráfica de Speedup, las cuales permitieron analizar el comportamiento del algoritmo frente al incremento del paralelismo y evaluar el impacto de la utilización de múltiples hilos sobre el rendimiento general de la aplicación.
 
 ---
 
