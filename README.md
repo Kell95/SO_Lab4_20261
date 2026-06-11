@@ -10,6 +10,8 @@
 > Brayan Stiven Jaraba Alvarez
 > b.jaraba@udea.edu.co
 > 1032178608
+>
+> **Enlace Notebook: https://colab.research.google.com/drive/153-MZ6iJ31cUpQqQoDdPHE0qF6HuF6n-?usp=sharing#scrollTo=CA8neu8OX88z**
 ---
 ## Integración numérica $\pi$
 En esta parte del laboratorio se implementó un programa para calcular una aproximación del número π utilizando integración numérica. El método empleado se basa en la siguiente integral:
@@ -23,25 +25,21 @@ La idea consiste en dividir el intervalo ([0,1]) en una gran cantidad de subinte
 Para el desarrollo de la práctica se implementaron dos versiones del programa:
 
 Versión serial (pi.c): realiza todos los cálculos utilizando un único hilo de ejecución.
+
 Versión paralela (pi_p.c): distribuye el trabajo entre varios hilos.
 
-## Para el desarrollo de la práctica se implementaron dos versiones del programa:
 
-Una versión serial (pi.c), que realiza todos los cálculos utilizando un único hilo de ejecución.
-Una versión paralela (pi_p.c), que distribuye el trabajo entre varios hilos utilizando la biblioteca POSIX Threads (Pthreads).
-Explicación de la implementación
-Versión serial
-
-La versión serial realiza el cálculo recorriendo todas las particiones del intervalo y acumulando el valor de la función evaluada en cada punto medio.
 
 
 ## Implementación y documentación de funciones
-ersión serial (pi.c)
-Función GetTime()
+
+## Versión serial (pi.c)
+
+- **Función GetTime()**
 
 Esta función obtiene el tiempo actual del sistema utilizando la estructura timeval y la llamada al sistema gettimeofday(). Su propósito es medir el tiempo de ejecución del algoritmo y evaluar el rendimiento de la aplicación.
 
-Función f(double x)
+- **Función f(double x)**
 
 Implementa la función matemática utilizada para calcular la integral:
 
@@ -51,7 +49,7 @@ $$
 
 Recibe como parámetro el valor de x y retorna el resultado de la evaluación de la función.
 
-Función CalcPi(long long n)
+- **Función CalcPi(long long n)**
 
 Es la función encargada de realizar el cálculo de π mediante integración numérica. Calcula el tamaño de cada subintervalo y recorre las n particiones del intervalo. Para cada iteración determina el punto medio:
 
@@ -61,13 +59,13 @@ $$
 
 evalúa la función en dicho punto y acumula el resultado en una suma total. Finalmente multiplica la suma acumulada por el tamaño del subintervalo para obtener la aproximación de π.
 
-Función main()
+- **Función main()**
 
 Controla la ejecución general del programa. Recibe el número de iteraciones desde la línea de comandos, inicia la medición del tiempo, invoca la función CalcPi(), muestra el valor calculado de π y reporta el tiempo total de ejecución.
 
 ## Versión paralela (pi_p.c)
 
-Estructura ThreadData
+- **Estructura ThreadData**
 
 Se utiliza para transferir información entre el hilo principal y los hilos trabajadores. Contiene:
 
@@ -79,7 +77,7 @@ Función CalcPartialPi(void *arg)
 
 Es la función ejecutada por cada hilo. Recibe una estructura ThreadData con el rango de iteraciones asignado y calcula una suma parcial de la integral únicamente para ese segmento. El resultado es almacenado en el campo partial_sum de la estructura correspondiente.
 
-Función main()
+- **Función main()**
 
 La función principal recibe el número total de iteraciones y la cantidad de hilos a utilizar. Posteriormente divide el trabajo entre los hilos disponibles, crea los hilos mediante pthread_create(), espera su finalización con pthread_join() y suma todos los resultados parciales obtenidos. Finalmente calcula el valor aproximado de π y muestra el tiempo de ejecución.
 
@@ -224,3 +222,18 @@ La IA nos fue útil para la implementación y la búsqueda y solución de proble
 - Completaciones de código en editores de texto. Los editores de código modernos tienen sugerencias de código en línea generadas por inteligencia artificial, algunas de las cuales fueron sugerencias muy útiles en esta implementación.
 
 - Investigación y solución de problemas. El motor de búsqueda de Google trae una inteligencia artificial integrada, que ayuda a que las búsquedas sean mucho más rápidas, pues recolecta información de diferentes fuentes y genera sugerencias de código. Esta fue utilizada para resolver dudas relacionadas con cómo implementar hilos en C, cómo medir el tiempo de ejecución de un programa en C y otras relacionadas con el laboratorio
+
+
+## Conclusiones
+
+- La integración numérica mediante la regla del punto medio permitió obtener una aproximación precisa del número π, evidenciando que el error disminuye a medida que aumenta el número de subdivisiones utilizadas en el cálculo.
+  
+- La implementación paralela utilizando Pthreads permitió aplicar los conceptos de creación, ejecución y sincronización de hilos, demostrando cómo un problema computacional puede dividirse en tareas independientes para ser procesadas concurrentemente.
+
+-El uso de sumas parciales por hilo evitó condiciones de carrera y eliminó la necesidad de emplear mecanismos adicionales de sincronización durante el cálculo, simplificando la solución y mejorando su escalabilidad.
+
+-Los resultados experimentales mostraron que el aumento del número de hilos no garantiza necesariamente una reducción proporcional del tiempo de ejecución, debido al overhead asociado a la creación, administración y sincronización de los hilos.
+
+-El análisis de las métricas de Speedup y Eficiencia permitió evaluar el comportamiento de la versión paralela y comprender las limitaciones prácticas del paralelismo, especialmente cuando el número de hilos supera la capacidad real de procesamiento del sistema.
+
+-La práctica permitió reforzar conceptos fundamentales de programación concurrente, como la distribución de carga, el modelo de memoria compartida y la sincronización mediante pthread_join(), proporcionando experiencia práctica en el desarrollo de aplicaciones multihilo.
