@@ -12,6 +12,8 @@
 > 1032178608
 >
 > **Enlace Notebook: https://colab.research.google.com/drive/153-MZ6iJ31cUpQqQoDdPHE0qF6HuF6n-?usp=sharing#scrollTo=CA8neu8OX88z**
+>
+> **Enlace video : https://drive.google.com/drive/u/0/folders/11AFYHd-h_WXX8bvGi_Rpasn-FNRAv-iN**
 ---
 ## Integración numérica $\pi$
 En esta parte del laboratorio se implementó un programa para calcular una aproximación del número π utilizando integración numérica. El método empleado se basa en la siguiente integral:
