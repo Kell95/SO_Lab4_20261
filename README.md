@@ -67,13 +67,16 @@ Controla la ejecución general del programa. Recibe el número de iteraciones de
 
 - **Estructura ThreadData**
 
-Se utiliza para transferir información entre el hilo principal y los hilos trabajadores. Contiene:
+Se utiliza para transferir información entre el hilo principal y los hilos trabajadores. 
+
+Contiene:
 
 start: inicio del rango de iteraciones.
 end: fin del rango de iteraciones.
 partial_sum: suma parcial calculada por el hilo.
 h: tamaño del subintervalo.
-Función CalcPartialPi(void *arg)
+
+- **Función CalcPartialPi(void arg)**
 
 Es la función ejecutada por cada hilo. Recibe una estructura ThreadData con el rango de iteraciones asignado y calcula una suma parcial de la integral únicamente para ese segmento. El resultado es almacenado en el campo partial_sum de la estructura correspondiente.
 
@@ -230,10 +233,10 @@ La IA nos fue útil para la implementación y la búsqueda y solución de proble
   
 - La implementación paralela utilizando Pthreads permitió aplicar los conceptos de creación, ejecución y sincronización de hilos, demostrando cómo un problema computacional puede dividirse en tareas independientes para ser procesadas concurrentemente.
 
--El uso de sumas parciales por hilo evitó condiciones de carrera y eliminó la necesidad de emplear mecanismos adicionales de sincronización durante el cálculo, simplificando la solución y mejorando su escalabilidad.
+- El uso de sumas parciales por hilo evitó condiciones de carrera y eliminó la necesidad de emplear mecanismos adicionales de sincronización durante el cálculo, simplificando la solución y mejorando su escalabilidad.
 
--Los resultados experimentales mostraron que el aumento del número de hilos no garantiza necesariamente una reducción proporcional del tiempo de ejecución, debido al overhead asociado a la creación, administración y sincronización de los hilos.
+- Los resultados experimentales mostraron que el aumento del número de hilos no garantiza necesariamente una reducción proporcional del tiempo de ejecución, debido al overhead asociado a la creación, administración y sincronización de los hilos.
 
--El análisis de las métricas de Speedup y Eficiencia permitió evaluar el comportamiento de la versión paralela y comprender las limitaciones prácticas del paralelismo, especialmente cuando el número de hilos supera la capacidad real de procesamiento del sistema.
+- El análisis de las métricas de Speedup y Eficiencia permitió evaluar el comportamiento de la versión paralela y comprender las limitaciones prácticas del paralelismo, especialmente cuando el número de hilos supera la capacidad real de procesamiento del sistema.
 
--La práctica permitió reforzar conceptos fundamentales de programación concurrente, como la distribución de carga, el modelo de memoria compartida y la sincronización mediante pthread_join(), proporcionando experiencia práctica en el desarrollo de aplicaciones multihilo.
+- La práctica permitió reforzar conceptos fundamentales de programación concurrente, como la distribución de carga, el modelo de memoria compartida y la sincronización mediante pthread_join(), proporcionando experiencia práctica en el desarrollo de aplicaciones multihilo.
